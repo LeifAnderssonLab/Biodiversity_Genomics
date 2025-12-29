@@ -1,0 +1,28 @@
+
+        
+pdf("PCAngsd3.pdf")
+
+pop <- read.table("pop_info.txt")
+C <- as.matrix(read.table("output_pcangsd_genolike_OZ034959.beagle.cov"))
+e <- eigen(C)
+grp <- as.character(pop[,1])
+
+cols_map <- c(
+  WIRE="red", SEIRE="blue", NOSP="green", CORU="orange",
+  ALG="purple", MED="cyan", ICEW="brown", ICEE="pink", FAROE="black"
+)
+
+# expand right margin for legend space
+par(mar = c(5, 4, 4, 8) + 0.1)
+
+plot(e$vectors[,1:2],
+     col = cols_map[grp],
+     pch = 19,
+     xlab = "PC1", ylab = "PC2",
+     main = "individual allele frequency")
+
+legend("topright", inset = c(-0.25, 0), 
+       legend = names(cols_map),
+       col = cols_map, pch = 19, bty = "n", xpd = TRUE)
+
+dev.off()
